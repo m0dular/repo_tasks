@@ -1,0 +1,13 @@
+{
+  "description": "Query for an installed repository",
+  "private": true,
+  "input_method": "environment",
+  "parameters": {
+    "name": {
+      "description": "Name of the repo to query for"
+    }
+  },
+  "implementations": [
+    {"name": "query_repo.sh", "requirements": ["shell"], "files": ["repo_tasks/files/common.sh", "facts/tasks/bash.sh"], "input_method": "environment"}
+  ]
+}

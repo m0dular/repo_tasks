@@ -1,0 +1,16 @@
+{
+  "description": "Install a repository definition for use with yum or apt",
+  "private": true,
+  "input_method": "environment",
+  "parameters": {
+    "repo_url": {
+      "description": "URL of the repo to install"
+    },
+    "extra_args": {
+      "description": "Extra arguments to pass to the underlying package manager"
+    }
+  },
+  "implementations": [
+    {"name": "install_repo.sh", "requirements": ["shell"], "files": ["repo_tasks/files/common.sh", "facts/tasks/bash.sh"], "input_method": "environment"}
+  ]
+}
