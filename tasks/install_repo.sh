@@ -7,12 +7,14 @@ source "$PT__installdir/facts/tasks/bash.sh" >/dev/null || {
 }
 source "$PT__installdir/repo_tasks/files/common.sh"
 
+shopt -s nocasematch
+
 [[ $repo_url ]] || { echo "repo_url is required" >&2; fail; }
 
-case "${ID,,}" in
+case "$ID" in
   'redhat'|'rhel')
     # rpm exits 1 if the package is already installed
-    rpm -i $extra_args "$repo_url" || {
+    rpm $extra_args -i "$repo_url" || {
       grep -q "already installed" "$_tmp" || {
         echo "Error installing $repo_url" >&2
         fail
@@ -30,7 +32,7 @@ case "${ID,,}" in
     apt-get update >/dev/null
     ;;
   'sles'|'suse'|'opensuse')
-    zypper ar $extra_args "$repo_url" "$name" || fail "oh no"
+    zypper -nqt $extra_args ar "$repo_url" "$name" >/dev/null || { echo "Error installing repo" >&2; fail; }
     ;;
   *)
     echo "Unsupported platform $ID" >&2

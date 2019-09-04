@@ -6,6 +6,10 @@
     "repo_url": {
       "description": "URL of the repo to install"
     },
+    "name": {
+      "description": "Optional name for repository managers that support it",
+      "type": "Optional[String[1]]"
+    },
     "extra_args": {
       "description": "Extra arguments to pass to the underlying package manager"
     }

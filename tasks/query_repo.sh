@@ -7,11 +7,11 @@ source "$PT__installdir/facts/tasks/bash.sh" >/dev/null || {
 }
 source "$PT__installdir/repo_tasks/files/common.sh"
 
-shopt -s nullglob
+shopt -s nullglob nocasematch
 
 [[ $name ]] || { echo "name is a required parameter" >&2; fail; }
 
-case "${ID,,}" in
+case "$ID" in
   'redhat'|'rhel'|'centos')
     while IFS= read -r line; do
       line="$(echo "$line" | tr -s ' ')"
@@ -28,11 +28,15 @@ case "${ID,,}" in
 
   'sles'|'suse'|'opensuse')
     _tmp_sles="$(mktemp)"
-    zypper -q lr >"$_tmp_sles"
+    zypper -q lr | sed '/^\s*$/d' >"$_tmp_sles"
+    repos+=("\"$(sed -n 1p $_tmp_sles)\"")
+    repos+=("\"$(sed -n 2p $_tmp_sles)\"")
 
     while IFS= read -r line; do
       repos+=("\"$line\"")
     done < <(grep "$name" "$_tmp_sles")
+
+    (( ${#repos[@]} == 2 )) && repos=()
     ;;
 
   *)
