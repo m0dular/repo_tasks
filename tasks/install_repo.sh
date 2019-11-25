@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#TODO: root check
+
+
 declare PT__installdir
 source "$PT__installdir/facts/tasks/bash.sh" >/dev/null || {
   echo "The puppetlabs-facts module is required" >&2
@@ -7,12 +10,10 @@ source "$PT__installdir/facts/tasks/bash.sh" >/dev/null || {
 }
 source "$PT__installdir/repo_tasks/files/common.sh"
 
-shopt -s nocasematch
-
 [[ $repo_url ]] || { echo "repo_url is required" >&2; fail; }
 
 case "$ID" in
-  'redhat'|'rhel')
+  'redhat'|'rhel'|'centos')
     # rpm exits 1 if the package is already installed
     rpm $extra_args -i "$repo_url" || {
       grep -q "already installed" "$_tmp" || {
@@ -23,6 +24,8 @@ case "$ID" in
     ;;
   'debian'|'ubuntu')
     type add-apt-repository &>/dev/null || {
+      # On a fresh box we may need to run an update first.  If it fails we won't be able install anything anyway.
+      apt-get update || fail
       DEBIAN_FRONTEND=noninteractive apt-get install -y $extra_args software-properties-common >/dev/null
     }
 

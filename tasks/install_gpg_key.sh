@@ -9,8 +9,9 @@ source "$PT__installdir/repo_tasks/files/common.sh"
 
 [[ $gpg_url ]] || { echo "gpg_url is required" >&2; fail; }
 
+#TODO: bash 3
 case "${ID,,}" in
-  'redhat'|'rhel'|'sles'|'fedora')
+  'redhat'|'rhel'|'sles'|'fedora'|'centos')
     rpm --import "$gpg_url" || fail "Error installing $gpg_url"
     ;;
   'debian'|'ubuntu')
