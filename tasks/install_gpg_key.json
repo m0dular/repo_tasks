@@ -5,9 +5,6 @@
   "parameters": {
     "gpg_url": {
       "description": "URL of the key to install"
-    },
-    "name": {
-      "description": "Name of the target platform"
     }
   },
   "implementations": [
