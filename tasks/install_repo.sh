@@ -13,7 +13,7 @@ source "$PT__installdir/repo_tasks/files/common.sh"
 [[ $repo_url ]] || { echo "repo_url is required" >&2; fail; }
 
 case "$ID" in
-  'redhat'|'rhel'|'centos')
+  'redhat'|'rhel'|'centos'|'fedora')
     # rpm exits 1 if the package is already installed
     rpm $extra_args -i "$repo_url" || {
       grep -q "already installed" "$_tmp" || {

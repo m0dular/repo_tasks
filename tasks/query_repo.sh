@@ -12,7 +12,7 @@ shopt -s nullglob nocasematch
 [[ $name ]] || { echo "name is a required parameter" >&2; fail; }
 
 case "$ID" in
-  'redhat'|'rhel'|'centos')
+  'redhat'|'rhel'|'centos'|'fedora')
     while IFS= read -r line; do
       line="$(echo "$line" | tr -s ' ')"
       repos+=(\""$line"\")
@@ -36,6 +36,7 @@ case "$ID" in
       repos+=("\"$line\"")
     done < <(grep "$name" "$_tmp_sles")
 
+    # Don't return the head if we didn't match
     (( ${#repos[@]} == 2 )) && repos=()
     ;;
 
