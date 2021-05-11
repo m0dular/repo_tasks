@@ -38,8 +38,7 @@ case "${ID,,}" in
         fail "Error installing dirmngr"
       }
     }
-    find /etc/apt/trusted.gpg.d/ -ls
-    apt-key adv --fetch-keys "$gpg_url" >/dev/null || {
+    curl "$gpg_url" | gpg --import >/dev/null || {
       fail "Error installing $gpg_url"
     }
   ;;
