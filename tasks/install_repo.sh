@@ -44,7 +44,7 @@ case "$ID" in
     }
 
     # This may result in a duplicate src line in sources.list, but should be ok
-    add-apt-repository "$repo_url" &>"$_tmp" || { echo "Error installing repo" >&2; fail; }
+    sudo add-apt-repository "$repo_url" &>"$_tmp" || { echo "Error installing repo" >&2; fail; }
     # Not all versions of add-apt-repository have the --update flag
     apt-get update >/dev/null
     ;;
