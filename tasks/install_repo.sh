@@ -39,14 +39,14 @@ case "$ID" in
   'debian'|'ubuntu')
     type add-apt-repository &>/dev/null || {
       # On a fresh box we may need to run an update first.  If it fails we won't be able install anything anyway.
-      apt-get update || fail
-      DEBIAN_FRONTEND=noninteractive apt-get install -y $extra_args software-properties-common >/dev/null
+      sudo apt-get update || fail
+      DEBIAN_FRONTEND=noninteractive sudo apt-get install -y $extra_args software-properties-common >/dev/null
     }
 
     # This may result in a duplicate src line in sources.list, but should be ok
     sudo add-apt-repository "$repo_url" &>"$_tmp" || { echo "Error installing repo" >&2; fail; }
     # Not all versions of add-apt-repository have the --update flag
-    apt-get update >/dev/null
+    sudo apt-get update >/dev/null
     ;;
   'sles'|'suse'|'opensuse')
     zypper -nqt $extra_args ar "$repo_url" "$name" >/dev/null || { echo "Error installing repo" >&2; fail; }
