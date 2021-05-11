@@ -9,6 +9,7 @@ source "$base_dir/../puppetlabs-facts/tasks/bash.sh" >/dev/null || {
   echo "Please clone this repo with --recurse-submodules"
   fail
 }
+
 while getopts ":g:" opt; do
   case "$opt" in
     g)

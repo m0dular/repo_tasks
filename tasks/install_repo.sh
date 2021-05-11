@@ -1,14 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-#TODO: root check
+# Source scripts under the root of the module.  Works regardless of where we are called from
+base_dir="${BASH_SOURCE[0]%/*}"
 
-
-declare PT__installdir
-source "$PT__installdir/facts/tasks/bash.sh" >/dev/null || {
+source "$base_dir/../files/common.sh"
+source "$base_dir/../puppetlabs-facts/tasks/bash.sh" >/dev/null || {
   echo "The puppetlabs-facts module is required" >&2
+  echo "Please clone this repo with --recurse-submodules"
   fail
 }
-source "$PT__installdir/repo_tasks/files/common.sh"
+
+while getopts ":r:" opt; do
+  case "$opt" in
+    r)
+      repo_url="$OPTARG"
+      ;;
+    :)
+      echo "Option -$OPTARG requires a table as an argument." >&2
+      fail
+      ;;
+    esac
+  done
+
+shift $((OPTIND-1))
 
 [[ $repo_url ]] || { echo "repo_url is required" >&2; fail; }
 
