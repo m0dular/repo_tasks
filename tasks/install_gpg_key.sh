@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Source scripts under this directory.  Works regardless of where we are called from
+# Source scripts under the root of the module.  Works regardless of where we are called from
 base_dir="${BASH_SOURCE[0]%/*}"
 
 source "$base_dir/../files/common.sh"
@@ -38,6 +38,7 @@ case "${ID,,}" in
         fail "Error installing dirmngr"
       }
     }
+    find /etc/apt/trusted.gpg.d/ -ls
     apt-key adv --fetch-keys "$gpg_url" >/dev/null || {
       fail "Error installing $gpg_url"
     }
