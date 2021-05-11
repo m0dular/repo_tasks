@@ -1,11 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-declare PT__installdir
-source "$PT__installdir/facts/tasks/bash.sh" >/dev/null || {
+# Source scripts under this directory.  Works regardless of where we are called from
+base_dir="${BASH_SOURCE[0]%/*}"
+
+source "$base_dir/../files/common.sh"
+source "$base_dir/../puppetlabs-facts/tasks/bash.sh" >/dev/null || {
   echo "The puppetlabs-facts module is required" >&2
+  echo "Please clone this repo with --recurse-submodules"
   fail
 }
-source "$PT__installdir/repo_tasks/files/common.sh"
+while getopts ":g:" opt; do
+  case "$opt" in
+    g)
+      gpg_url="$OPTARG"
+      echo $gpg_url
+      ;;
+    :)
+      echo "Option -$OPTARG requires a table as an argument." >&2
+      fail
+      ;;
+    esac
+  done
+
+shift $((OPTIND-1))
 
 [[ $gpg_url ]] || { echo "gpg_url is required" >&2; fail; }
 
