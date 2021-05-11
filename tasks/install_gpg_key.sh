@@ -9,7 +9,6 @@ source "$base_dir/../puppetlabs-facts/tasks/bash.sh" >/dev/null || {
   echo "Please clone this repo with --recurse-submodules"
   fail
 }
-
 while getopts ":g:" opt; do
   case "$opt" in
     g)
@@ -39,7 +38,7 @@ case "${ID,,}" in
         fail "Error installing dirmngr"
       }
     }
-    curl "$gpg_url" | gpg --import >/dev/null || {
+    sudo apt-key adv --fetch-keys "$gpg_url" >/dev/null || {
       fail "Error installing $gpg_url"
     }
   ;;
